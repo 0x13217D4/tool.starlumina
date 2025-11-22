@@ -35,6 +35,15 @@
     .copyright {
         font-size: 0.9rem;
     }
+    
+    .author-link {
+        color: white !important;
+        text-decoration: none !important;
+    }
+    
+    .author-link:hover {
+        text-decoration: none !important;
+    }
 </style>
 
 <footer class="footer">
@@ -51,5 +60,5 @@
         <img class="logos" src="https://vip.123pan.cn/1832150722/ymjew503t0l000d7w32xfcwa742s0k5lDIYwDqeyDdUvDpxPAdDxDF==.png" width="15" height="15">
         <a href="https://beian.mps.gov.cn/#/query/webSearch?code=51019002007728" target="_blank">川公网安备51019002007728号</a>
     </div>
-    <div class="copyright">© <span id="current-year"></span> 星芒工具箱 版权所有</div>
+    <div class="copyright">© <span id="current-year"></span> <a href="https://about.starlumina.com/" target="_blank" class="author-link">胡黄成霖</a> 版权所有</div>
 </footer>
