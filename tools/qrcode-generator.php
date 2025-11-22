@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
@@ -61,6 +61,7 @@
         
         /* 滑块样式 */
         input[type="range"] {
+            appearance: none;
             -webkit-appearance: none;
             width: 100%;
             height: 8px;
@@ -71,8 +72,8 @@
         }
         
         input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
             appearance: none;
+            -webkit-appearance: none;
             width: 18px;
             height: 18px;
             border-radius: 50%;
@@ -88,9 +89,9 @@
         
         /* 颜色选择器样式 */
         input[type="color"] {
+            appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
-            appearance: none;
             width: 50px;
             height: 50px;
             border: none;

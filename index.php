@@ -43,6 +43,18 @@
                 <p>选择、转换颜色代码</p>
                 <a href="tools/color-picker.php" class="use-btn">使用</a>
             </div>
+            <div class="tool-card">
+                <div class="card-icon">⌨️</div>
+                <h3>键盘按键测试</h3>
+                <p>检测键盘按键响应状态和键位冲突</p>
+                <a href="tools/keyboard-test.php" class="use-btn">使用</a>
+            </div>
+            <div class="tool-card">
+                <div class="card-icon">📊</div>
+                <h3>屏幕帧率检测</h3>
+                <p>实时监测屏幕帧率，优化游戏和浏览体验</p>
+                <a href="tools/fps-monitor.php" class="use-btn">使用</a>
+            </div>
         </div>
 
         <h2 class="category-title">开发工具</h2>
@@ -262,6 +274,18 @@
                 <h3>24点游戏</h3>
                 <p>数学计算益智游戏</p>
                 <a href="tools/24-point-game.php" class="use-btn">使用</a>
+            </div>
+            <div class="tool-card">
+                <div class="card-icon">💣</div>
+                <h3>扫雷游戏</h3>
+                <p>经典扫雷益智游戏</p>
+                <a href="tools/minesweeper.php" class="use-btn">使用</a>
+            </div>
+            <div class="tool-card">
+                <div class="card-icon">⚫</div>
+                <h3>五子棋游戏</h3>
+                <p>经典对弈游戏</p>
+                <a href="tools/gomoku.php" class="use-btn">使用</a>
             </div>
         </div>
 
