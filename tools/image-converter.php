@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
@@ -222,7 +222,7 @@
 
         function convertToSvg(img, originalName) {
             const svgContent = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="${img.width}" height="${img.height}">
+                <svg xmlns="https://www.w3.org/2000/svg" width="${img.width}" height="${img.height}">
                     <image href="${img.src}" width="${img.width}" height="${img.height}"/>
                 </svg>
             `;

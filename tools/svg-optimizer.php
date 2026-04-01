@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
@@ -228,7 +228,7 @@
                     optimized = optimized.replace(/<\?xml[^>]+\?>/, '');
                     
                     // 移除DOCTYPE
-                    optimized = optimized.replace(/<!DOCTYPE[^>]+>/, '');
+                    optimized = optimized.replace(/<!DOCTYPE[^>]+>/g, '');
                     
                     // 移除注释
                     if (document.getElementById('remove-comments').checked) {

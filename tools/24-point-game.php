@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -118,20 +118,6 @@
             color: #2c3e50;
         }
         
-        .back-btn {
-            display: inline-block;
-            margin-bottom: 20px;
-            padding: 8px 15px;
-            background-color: #95a5a6;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: all 0.3s;
-        }
-        
-        .back-btn:hover {
-            background-color: #7f8c8d;
-        }
     </style>
 </head>
 <body>
@@ -244,17 +230,17 @@
                     cardNumbers.splice(index, 1);
                 }
                 
-                // 计算表达式结果
-                try {
-                    const result = eval(expression);
-                    if (Math.abs(result - 24) < 0.0001) {
-                        showMessage('恭喜！计算正确！', 'success');
-                    } else {
-                        showMessage(`计算结果为 ${result}，不是24`, 'error');
-                    }
-                } catch (e) {
-                    showMessage('算式无效，请检查', 'error');
-                }
+        // 计算表达式结果（安全方式）
+        try {
+            const result = safeEval(expression);
+            if (Math.abs(result - 24) < 0.0001) {
+                showMessage('恭喜！计算正确！', 'success');
+            } else {
+                showMessage(`计算结果为 ${result}，不是24`, 'error');
+            }
+        } catch (e) {
+            showMessage('算式无效，请检查', 'error');
+        }
             }
 
             // 显示提示
@@ -297,7 +283,7 @@
                                 
                                 for (const expr of expressions) {
                                     try {
-                                        if (Math.abs(eval(expr) - 24) < 0.0001) {
+                                        if (Math.abs(safeEval(expr) - 24) < 0.0001) {
                                             return expr;
                                         }
                                     } catch (e) {
@@ -343,6 +329,24 @@
             // 隐藏消息
             function hideMessage() {
                 messageElement.style.display = 'none';
+            }
+
+            // 安全的数学表达式计算器
+            function safeEval(expression) {
+                // 移除所有空格并验证只包含允许的字符
+                const cleanedExpr = expression.replace(/\s+/g, '');
+                  
+                // 验证表达式只包含数字和运算符
+                if (!/^[\d\+\-\*\/\(\)\.]+$/.test(cleanedExpr)) {
+                    throw new Error('非法字符');
+                }
+                
+                // 使用Function构造函数在严格模式下安全计算
+                try {
+                    return Function('"use strict"; return (' + cleanedExpr + ')')();
+                } catch (e) {
+                    throw new Error('计算失败');
+                }
             }
 
             // 事件监听

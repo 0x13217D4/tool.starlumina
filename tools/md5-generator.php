@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
@@ -75,31 +75,34 @@
     <div id="footer-container"></div>
 
     <script>
-        // 加载公共组件
-        fetch('../templates/header.php')
-            .then(response => response.text())
-            .then(html => document.getElementById('header-container').innerHTML = html);
-            
-        fetch('../templates/footer.php')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('footer-container').innerHTML = html;
-                document.getElementById('current-year').textContent = new Date().getFullYear();
+        // 确保DOM加载完成后再执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 加载公共组件
+            fetch('../templates/header.php')
+                .then(response => response.text())
+                .then(html => document.getElementById('header-container').innerHTML = html);
+                
+            fetch('../templates/footer.php')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('footer-container').innerHTML = html;
+                    document.getElementById('current-year').textContent = new Date().getFullYear();
+                });
+
+            // MD5哈希计算功能
+            document.getElementById('hash-btn').addEventListener('click', function() {
+                const input = document.getElementById('input-text').value;
+                
+                if (input) {
+                    const hash = CryptoJS.MD5(input).toString(CryptoJS.enc.Hex);
+                    document.getElementById('output-text').value = hash;
+                }
             });
 
-        // MD5哈希计算功能
-        document.getElementById('hash-btn').addEventListener('click', function() {
-            const input = document.getElementById('input-text').value;
-            
-            if (input) {
-                const hash = CryptoJS.MD5(input).toString(CryptoJS.enc.Hex);
-                document.getElementById('output-text').value = hash;
-            }
-        });
-
-        document.getElementById('clear-btn').addEventListener('click', function() {
-            document.getElementById('input-text').value = '';
-            document.getElementById('output-text').value = '';
+            document.getElementById('clear-btn').addEventListener('click', function() {
+                document.getElementById('input-text').value = '';
+                document.getElementById('output-text').value = '';
+            });
         });
     </script>
 </body>

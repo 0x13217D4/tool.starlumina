@@ -50,10 +50,28 @@
                 <a href="tools/keyboard-test.php" class="use-btn">使用</a>
             </div>
             <div class="tool-card">
+                <div class="card-icon">🖱️</div>
+                <h3>鼠标测试</h3>
+                <p>全面测试鼠标按键、滚轮、移动轨迹和响应精度</p>
+                <a href="tools/mouse-test.php" class="use-btn">使用</a>
+            </div>
+            <div class="tool-card">
+                <div class="card-icon">🔊</div>
+                <h3>音响测试</h3>
+                <p>声道配置、频响范围与环绕声定位测试</p>
+                <a href="tools/speaker-test.php" class="use-btn">使用</a>
+            </div>
+            <div class="tool-card">
                 <div class="card-icon">📊</div>
                 <h3>屏幕帧率检测</h3>
                 <p>实时监测屏幕帧率，优化游戏和浏览体验</p>
                 <a href="tools/fps-monitor.php" class="use-btn">使用</a>
+            </div>
+            <div class="tool-card">
+                <div class="card-icon">🎡</div>
+                <h3>随机转盘</h3>
+                <p>可视化数字抽奖工具</p>
+                <a href="tools/roulette-wheel.php" class="use-btn">使用</a>
             </div>
         </div>
 
@@ -72,12 +90,6 @@
                 <a href="tools/xml-formatter.php" class="use-btn">使用</a>
             </div>
             <div class="tool-card">
-                <div class="card-icon">📄</div>
-                <h3>Markdown预览</h3>
-                <p>实时预览Markdown渲染效果</p>
-                <a href="tools/markdown-preview.php" class="use-btn">使用</a>
-            </div>
-            <div class="tool-card">
                 <div class="card-icon">✨</div>
                 <h3>代码格式化</h3>
                 <p>自动格式化代码</p>
@@ -88,24 +100,6 @@
                 <h3>正则表达式测试</h3>
                 <p>测试和调试正则表达式</p>
                 <a href="tools/regex-tester.php" class="use-btn">使用</a>
-            </div>
-            <div class="tool-card">
-                <div class="card-icon">🔤</div>
-                <h3>Base64加解密</h3>
-                <p>Base64编码/解码工具</p>
-                <a href="tools/base64-converter.php" class="use-btn">使用</a>
-            </div>
-            <div class="tool-card">
-                <div class="card-icon">🔒</div>
-                <h3>SHA哈希生成</h3>
-                <p>生成SHA-1/256/384/512哈希值</p>
-                <a href="tools/sha-generator.php" class="use-btn">使用</a>
-            </div>
-            <div class="tool-card">
-                <div class="card-icon">🔑</div>
-                <h3>MD5加密</h3>
-                <p>生成MD5哈希值</p>
-                <a href="tools/md5-generator.php" class="use-btn">使用</a>
             </div>
             <div class="tool-card">
                 <div class="card-icon">🔄</div>
@@ -131,6 +125,16 @@
                 <p>基于JSON/CSV数据生成图表</p>
                 <a href="tools/chart-generator.php" class="use-btn">使用</a>
             </div>
+        </div>
+
+        <h2 class="category-title">文档编辑</h2>
+        <div class="category-group">
+            <div class="tool-card">
+                <div class="card-icon">📄</div>
+                <h3>在线Markdown编辑器</h3>
+                <p>功能强大的Markdown编辑器，支持实时预览、语法高亮、主题切换</p>
+                <a href="tools/markdown-preview.php" class="use-btn">使用</a>
+            </div>
             <div class="tool-card">
                 <div class="card-icon">🔍</div>
                 <h3>文本差异比较</h3>
@@ -147,6 +151,12 @@
 
         <h2 class="category-title">图像处理</h2>
         <div class="category-group">
+            <div class="tool-card">
+                <div class="card-icon">📈</div>
+                <h3>函数图像绘制器</h3>
+                <p>可视化数学函数，支持多函数绘制和动态参数调节</p>
+                <a href="tools/function-plotter.php" class="use-btn">使用</a>
+            </div>
             <div class="tool-card">
                 <div class="card-icon">🔳</div>
                 <h3>二维码生成</h3>
@@ -216,6 +226,12 @@
                 <h3>HTTP测试工具</h3>
                 <p>发送和测试HTTP请求</p>
                 <a href="tools/http-tester.php" class="use-btn">使用</a>
+            </div>
+            <div class="tool-card">
+                <div class="card-icon">🔤</div>
+                <h3>Base64加解密</h3>
+                <p>Base64编码/解码工具</p>
+                <a href="tools/base64-converter.php" class="use-btn">使用</a>
             </div>
             <div class="tool-card">
                 <div class="card-icon">🔒</div>
@@ -295,13 +311,13 @@
                 <div class="card-icon">🌐</div>
                 <h3>IPv4网速测试</h3>
                 <p>测试IPv4网络连接速度</p>
-                <a href="https://test.ustc.edu.cn/" class="use-btn" target="_blank">使用</a>
+                <a href="tools/ipv4-speed-test.php" class="use-btn">使用</a>
             </div>
             <div class="tool-card">
                 <div class="card-icon">🌐</div>
                 <h3>IPv6网速测试</h3>
                 <p>测试IPv6网络连接速度</p>
-                <a href="http://test6.ustc.edu.cn/" class="use-btn" target="_blank">使用</a>
+                <a href="tools/ipv6-speed-test.php" class="use-btn">使用</a>
             </div>
             <div class="tool-card">
                 <div class="card-icon">📍</div>
@@ -314,6 +330,12 @@
                 <h3>DNS查询</h3>
                 <p>查询域名的DNS记录信息</p>
                 <a href="tools/dns-lookup.php" class="use-btn">使用</a>
+            </div>
+            <div class="tool-card">
+                <div class="card-icon">📶</div>
+                <h3>流量消耗器</h3>
+                <p>测试网速并消耗网络流量</p>
+                <a href="tools/traffic-deplete.php" class="use-btn">使用</a>
             </div>
         </div>
         

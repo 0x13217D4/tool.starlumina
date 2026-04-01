@@ -1,48 +1,69 @@
 <style>
     /* 底部栏专用样式 */
     .footer {
-        background-color: #2c3e50;
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
         color: white;
         text-align: center;
-        padding: 1rem;
+        padding: 1.5rem;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.8rem;
+        margin-top: auto;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
     }
     
     .footer-info {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.8rem;
         flex-wrap: wrap;
+        font-size: 0.9rem;
     }
     
     .footer-info a {
-        color: white;
+        color: #3498db;
         text-decoration: none;
+        transition: all 0.3s;
+        font-weight: 500;
     }
     
     .footer-info a:hover {
+        color: #2ecc71;
         text-decoration: underline;
     }
     
     .logos {
         vertical-align: middle;
         margin: 0 5px;
+        filter: brightness(0) invert(1);
     }
     
     .copyright {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        opacity: 0.9;
     }
     
     .author-link {
-        color: white !important;
+        color: #3498db !important;
         text-decoration: none !important;
+        font-weight: 600;
     }
     
     .author-link:hover {
+        color: #2ecc71 !important;
         text-decoration: none !important;
+    }
+    
+    @media (max-width: 768px) {
+        .footer {
+            padding: 1rem;
+        }
+        
+        .footer-info {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
     }
 </style>
 

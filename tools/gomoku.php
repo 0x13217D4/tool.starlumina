@@ -982,8 +982,35 @@
         
         // 胜利模态框
         newGameBtn.addEventListener('click', () => {
-            if (gameState.gameMode) {
-                startGame(gameState.gameMode);
+            // 重置游戏状态但保持当前模式
+            gameState.board = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(0));
+            gameState.currentPlayer = 1;
+            gameState.gameActive = true;
+            gameState.moveHistory = [];
+            gameState.gameTime = 0;
+            
+            // 清除计时器并重新开始
+            if (gameState.timerInterval) {
+                clearInterval(gameState.timerInterval);
+            }
+            
+            // 更新显示
+            gameTimeEl.textContent = '00:00';
+            moveCountEl.textContent = '0';
+            updateGameStatus();
+            
+            // 重新开始计时
+            startTimer();
+            
+            // 重绘棋盘
+            drawBoard();
+            
+            // 隐藏胜利模态框
+            winModal.style.display = 'none';
+            
+            // 如果是人机对战且AI先手，触发AI下棋
+            if (gameState.gameMode === 'pve' && gameState.currentPlayer === gameState.aiPlayer) {
+                setTimeout(aiMove, 500);
             }
         });
         

@@ -63,7 +63,9 @@
             padding: 1rem;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
             margin: 0 auto;
-            display: inline-block;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         .game-info {
@@ -116,6 +118,7 @@
             gap: 1px;
             background: #3E2723;
             padding: 2px;
+            margin: 0 auto;
         }
         
         .cell {
@@ -331,11 +334,10 @@
             
             <div class="game-container">
                 <div class="game-header">
-                    <div class="difficulty-buttons">
-                        <button class="difficulty-btn active" data-level="beginner">初级 (9×9)</button>
-                        <button class="difficulty-btn" data-level="intermediate">中级 (16×16)</button>
-                        <button class="difficulty-btn" data-level="expert">高级 (16×30)</button>
-                    </div>
+                <div class="difficulty-buttons">
+                    <button class="difficulty-btn active" data-level="beginner">简单 (9×9)</button>
+                    <button class="difficulty-btn" data-level="intermediate">困难 (16×16)</button>
+                </div>
                 </div>
                 
                 <div class="game-board-container">
@@ -351,7 +353,7 @@
                     <h2 class="scores-title"><i class="fa fa-trophy"></i> 最佳成绩</h2>
                     <div class="scores-grid">
                         <div class="score-card">
-                            <h3>初级</h3>
+                            <h3>简单</h3>
                             <ul class="score-list" id="beginnerScores">
                                 <li><span class="score-rank">1.</span> <span class="score-time">--:--</span></li>
                                 <li><span class="score-rank">2.</span> <span class="score-time">--:--</span></li>
@@ -359,16 +361,8 @@
                             </ul>
                         </div>
                         <div class="score-card">
-                            <h3>中级</h3>
+                            <h3>困难</h3>
                             <ul class="score-list" id="intermediateScores">
-                                <li><span class="score-rank">1.</span> <span class="score-time">--:--</span></li>
-                                <li><span class="score-rank">2.</span> <span class="score-time">--:--</span></li>
-                                <li><span class="score-rank">3.</span> <span class="score-time">--:--</span></li>
-                            </ul>
-                        </div>
-                        <div class="score-card">
-                            <h3>高级</h3>
-                            <ul class="score-list" id="expertScores">
                                 <li><span class="score-rank">1.</span> <span class="score-time">--:--</span></li>
                                 <li><span class="score-rank">2.</span> <span class="score-time">--:--</span></li>
                                 <li><span class="score-rank">3.</span> <span class="score-time">--:--</span></li>
@@ -397,8 +391,7 @@
         // 游戏配置
         const gameConfig = {
             beginner: { rows: 9, cols: 9, mines: 10 },
-            intermediate: { rows: 16, cols: 16, mines: 40 },
-            expert: { rows: 16, cols: 30, mines: 99 }
+            intermediate: { rows: 16, cols: 16, mines: 40 }
         };
 
         // 游戏状态
@@ -474,18 +467,24 @@
             gameBoard.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
             
             // 计算单元格大小
-            const maxWidth = Math.min(window.innerWidth - 80, 800);
-            const cellSize = Math.min(30, Math.floor(maxWidth / cols));
+            const containerElement = gameBoard.parentElement;
+            const containerMaxWidth = containerElement.clientWidth - 32; // 减去padding
+            const maxBoardWidth = Math.min(containerMaxWidth, 800);
+            const cellSize = Math.min(30, Math.floor(maxBoardWidth / cols));
             
-            gameBoard.style.width = `${cols * cellSize}px`;
-            gameBoard.style.height = `${rows * cellSize}px`;
+            // 设置最小和最大尺寸限制
+            const minCellSize = 20;
+            const finalCellSize = Math.max(minCellSize, Math.min(cellSize, 30));
+            
+            gameBoard.style.width = `${cols * finalCellSize}px`;
+            gameBoard.style.height = `${rows * finalCellSize}px`;
             
             // 初始化游戏板数据
             gameState.board = [];
             for (let row = 0; row < rows; row++) {
                 gameState.board[row] = [];
                 for (let col = 0; col < cols; col++) {
-                    const cell = createCell(row, col);
+                    const cell = createCell(row, col, finalCellSize);
                     gameBoard.appendChild(cell);
                     gameState.board[row][col] = {
                         element: cell,
@@ -499,11 +498,15 @@
         }
 
         // 创建单个单元格
-        function createCell(row, col) {
+        function createCell(row, col, cellSize) {
             const cell = document.createElement('div');
             cell.className = 'cell';
             cell.dataset.row = row;
             cell.dataset.col = col;
+            
+            // 设置单元格大小
+            const fontSize = Math.max("0.7rem", Math.min(cellSize * 0.3, "0.9rem"));
+            cell.style.fontSize = fontSize;
             
             // 添加事件监听器
             cell.addEventListener('click', (e) => handleCellClick(e, row, col));
@@ -598,7 +601,6 @@
                 }
             }
         }
-
         // 揭开单元格
         function revealCell(row, col) {
             const cell = gameState.board[row][col];
@@ -687,7 +689,8 @@
                     const cell = gameState.board[row][col];
                     if (cell.isMine) {
                         cell.element.classList.add('mine');
-                        if (!cell.isFlagged) {
+                        // 只有当没有旗帜且没有显示内容时才添加地雷图标
+                        if (!cell.isFlagged && !cell.element.textContent) {
                             cell.element.textContent = '💣';
                         }
                     }

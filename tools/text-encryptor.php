@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
@@ -145,7 +145,7 @@
                                 <select id="algorithm">
                                     <option value="AES">AES</option>
                                     <option value="DES">DES</option>
-                                    <option value="TripleDES">TripleDES</option>
+                                    <option value="TripleDES">Triple DES</option>
                                     <option value="Rabbit">Rabbit</option>
                                     <option value="RC4">RC4</option>
                                 </select>
@@ -327,7 +327,7 @@
                                     key, 
                                     { 
                                         mode: CryptoJS.mode.CBC,
-                                        padding: CryptoJS.pad.Pkcs7,
+                                        padding: CryptoJS.pad.PKCS7,
                                         iv: CryptoJS.enc.Hex.parse('00000000000000000000000000000000')
                                     }
                                 );
@@ -513,7 +513,14 @@
             
             // 显示错误信息
             function showError(message) {
-                errorMessage.textContent = message;
+                // 转义 HTML 特殊字符防止 XSS
+                const escapedMessage = message
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+                errorMessage.textContent = escapedMessage;
                 errorMessage.style.display = 'block';
             }
             

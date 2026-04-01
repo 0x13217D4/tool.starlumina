@@ -309,29 +309,6 @@
                 resultText.value = '';
                 copyBtn.disabled = true;
             });
-            
-            function clearResults() {
-                resultText.value = '';
-                copyBtn.disabled = true;
-                
-                // 清除上传的图片
-                if (selectedFile) {
-                    fileInput.value = '';
-                    previewContainer.style.display = 'none';
-                    previewImage.src = '#';
-                    selectedFile = null;
-                    scanBtn.disabled = true;
-                }
-            }
-            
-            // 清空按钮事件
-            clearBtn.addEventListener('click', clearResults);
-            
-            // 复制结果按钮事件
-            copyBtn.addEventListener('click', () => {
-                resultText.select();
-                document.execCommand('copy');
-            });
         });
     </script>
 </body>

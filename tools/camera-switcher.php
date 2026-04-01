@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
@@ -165,11 +165,21 @@
                     }
                     
                     // 检查是否在安全上下文中
-                    if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                    if (window.location.protocol !== 'https:' && 
+                        window.location.hostname !== 'localhost' && 
+                        window.location.hostname !== '127.0.0.1') {
                         throw new Error('摄像头访问需要HTTPS安全连接或本地开发环境');
                     }
                     
-                    // 获取摄像头列表
+                    // 首先请求摄像头权限，这将触发权限提示
+                    let tempStream = null;
+                    try {
+                        tempStream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    } catch (err) {
+                        throw new Error(`摄像头权限被拒绝或不可用: ${err.message}`);
+                    }
+                    
+                    // 获取摄像头列表（权限获取后才能看到设备标签）
                     const devices = await navigator.mediaDevices.enumerateDevices();
                     cameras = devices.filter(device => device.kind === 'videoinput');
                     
@@ -184,13 +194,17 @@
                         cameraSelect.add(new Option(label, camera.deviceId));
                     });
                     
+                    // 关闭临时流
+                    if (tempStream) {
+                        tempStream.getTracks().forEach(track => track.stop());
+                    }
+                    
                     // 默认选择第一个摄像头
                     await switchCamera(cameras[0].deviceId);
                     
                     cameraSelect.disabled = false;
                     startBtn.disabled = true;
                     stopBtn.disabled = false;
-                    document.getElementById('capture-btn').disabled = false;
                     overlay.style.display = 'none';
                     
                 } catch (err) {
@@ -234,30 +248,47 @@
             async function switchCamera(deviceId) {
                 stopCamera();
                 
-                // 获取摄像头支持的能力
-                const device = cameras.find(cam => cam.deviceId === deviceId);
-                const capabilities = device ? await navigator.mediaDevices.getSupportedConstraints() : {};
-                
-                // 使用最高分辨率
-                const constraints = {
-                    video: {
-                        deviceId: { exact: deviceId },
-                        width: { ideal: capabilities.width?.max || 4096 },
-                        height: { ideal: capabilities.height?.max || 2160 }
+                try {
+                    // 使用保守的分辨率设置，确保兼容性
+                    const constraints = {
+                        video: {
+                            deviceId: { exact: deviceId },
+                            width: { ideal: 1920 },
+                            height: { ideal: 1080 }
+                        }
+                    };
+                    
+                    // 首先尝试理想分辨率
+                    try {
+                        stream = await navigator.mediaDevices.getUserMedia(constraints);
+                    } catch (err) {
+                        // 如果失败，尝试基本分辨率
+                        console.warn('理想分辨率失败，尝试基本分辨率:', err);
+                        const basicConstraints = {
+                            video: {
+                                deviceId: { exact: deviceId }
+                            }
+                        };
+                        stream = await navigator.mediaDevices.getUserMedia(basicConstraints);
                     }
-                };
-                
-                stream = await navigator.mediaDevices.getUserMedia(constraints);
-                video.srcObject = stream;
-                
-                // 更新分辨率信息
-                updateResolutionInfo();
-                
-                // 监听分辨率变化
-                video.onresize = updateResolutionInfo;
-                
-                // 确保拍摄按钮可用
-                document.getElementById('capture-btn').disabled = false;
+                    
+                    video.srcObject = stream;
+                    
+                    // 等待视频元数据加载完成
+                    video.onloadedmetadata = () => {
+                        updateResolutionInfo();
+                    };
+                    
+                    // 监听分辨率变化
+                    video.onresize = updateResolutionInfo;
+                    
+                    // 确保拍摄按钮可用
+                    document.getElementById('capture-btn').disabled = false;
+                    
+                } catch (err) {
+                    console.error('摄像头启动失败:', err);
+                    throw new Error(`摄像头启动失败: ${err.message}`);
+                }
             }
             
             // 更新分辨率信息

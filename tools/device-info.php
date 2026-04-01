@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
@@ -84,22 +84,74 @@
         document.getElementById('language').textContent = navigator.language;
         
         // 新增其他信息
-        function getBrowser() {
-            const ua = navigator.userAgent;
-            if (ua.includes("MicroMessenger")) return "微信";
-            if (ua.includes("StarLumina")) return "星芒集盒";
-            if (ua.includes("MQQBrowser") || ua.includes("QQBrowser")) return "QQ浏览器";
-            if (ua.includes("UCBrowser") || ua.includes("UCWEB")) return "UC浏览器";
-            if (ua.includes("baidubrowser") || ua.includes("baiduboxapp")) return "手机百度";
-            if (ua.includes("Huawei") || ua.includes("HONOR") || ua.includes("HuaweiBrowser")) return "华为浏览器";
-            if (ua.includes("MiuiBrowser")) return "MIUI浏览器";
-            if (ua.includes("Edg/")) return "Microsoft Edge";
-            if (ua.includes("Chrome")) return "Chrome";
-            if (ua.includes("Safari") && !ua.includes("Chrome")) return "Safari";
-            if (ua.includes("Firefox")) return "Firefox";
-            if (ua.includes("Via")) return "Via浏览器";
-            return "未知";
-        }
+function getBrowser() {
+    const ua = navigator.userAgent;
+
+    // App 内 WebView 优先判断
+    if (ua.includes("MicroMessenger")) return "微信app";
+    if (ua.includes("StarLumina")) return "星芒集盒app";
+    if (ua.includes("Weibo") && ua.includes("__weibo__")) return "微博app";
+    if (ua.includes("AlipayClient") && (ua.includes("NebulaSDK") || ua.includes("Nebula"))) return "支付宝app";
+    if (ua.includes("DingTalk")) return "钉钉app";
+    if (ua.includes("Taobao") || ua.includes("TB")) return "淘宝app";
+    if (ua.includes("JD") && ua.includes("mobile")) return "京东app";
+    if (ua.includes("TikTok") || ua.includes("Musical_ly")) return "抖音/TikTok app";
+    if (ua.includes("Kuaishou")) return "快手app";
+    if (ua.includes("Bilibili")) return "哔哩哔哩app";
+    if (ua.includes("iqiyi")) return "爱奇艺app";
+    if (ua.includes("youku")) return "优酷app";
+    if (ua.includes("tencentvideo")) return "腾讯视频app";
+    if (ua.includes("netease")) return "网易云音乐app";
+    if (ua.includes("QQ")) return "QQ app";
+    if (ua.includes("BaiduMap")) return "百度地图app";
+    if (ua.includes("Amap")) return "高德地图app";
+    if (ua.includes("Didi")) return "滴滴出行app";
+    if (ua.includes("Meituan")) return "美团app";
+    if (ua.includes("Eleme")) return "饿了么app";
+    if (ua.includes("SohuNews")) return "搜狐新闻app";
+    if (ua.includes("NeteaseNews")) return "网易新闻app";
+    if (ua.includes("Toutiao")) return "今日头条app";
+    if (ua.includes("Zhihu")) return "知乎app";
+    if (ua.includes("WeChatWork")) return "企业微信app";
+    if (ua.includes("Douyin")) return "抖音app";
+
+    // 移动端第三方浏览器
+    if (ua.includes("QQBrowser")) return "QQ浏览器";
+    if (ua.includes("UCBrowser") || ua.includes("UCWEB")) return "UC浏览器";
+    if (ua.includes("baidubrowser") || ua.includes("baiduboxapp")) return "百度浏览器";
+    if (ua.includes("HuaweiBrowser") || ua.includes("Huawei") || ua.includes("HONOR")) return "华为浏览器";
+    if (ua.includes("MiuiBrowser")) return "MIUI浏览器";
+    if (ua.includes("Via")) return "Via浏览器";
+    if (ua.includes("XiaoMiBrowser")) return "小米浏览器";
+    if (ua.includes("OppoBrowser")) return "OPPO浏览器";
+    if (ua.includes("VivoBrowser")) return "vivo浏览器";
+    if (ua.includes("SamsungBrowser")) return "三星浏览器";
+    if (ua.includes("LieBao")) return "猎豹浏览器";
+    if (ua.includes("SogouMobile")) return "搜狗手机浏览器";
+    if (ua.includes("360browser") || ua.includes("360 Aphone")) return "360浏览器";
+    if (ua.includes("Mercury")) return " Mercury浏览器";
+    if (ua.includes("JUC")) return "JUC浏览器";
+    if (ua.includes("Mxbrowser")) return "Maxthon浏览器";
+    if (ua.includes("Puffin")) return "Puffin浏览器";
+    if (ua.includes("Skyfire")) return "Skyfire浏览器";
+    if (ua.includes("Bolt")) return "Bolt浏览器";
+    if (ua.includes("Teashark")) return "TeaShark浏览器";
+    if (ua.includes("Blazer")) return "Blazer浏览器";
+    if (ua.includes("Obigo")) return "Obigo浏览器";
+
+    // 桌面/通用浏览器（注意顺序：Chrome 必须在 Safari 前）
+    if (ua.includes("Edg/")) return "Microsoft Edge";
+    if (ua.includes("OPR") || ua.includes("Opera")) return "Opera浏览器";
+    if (ua.includes("Chrome")) return "Chrome";
+    if (ua.includes("Firefox")) return "Firefox";
+    if (ua.includes("Safari") && !ua.includes("Chrome") && !ua.includes("Edg/") && !ua.includes("OPR")) return "Safari";
+    if (ua.includes("MSIE") || ua.includes("Trident")) return "Internet Explorer";
+    if (ua.includes("Netscape")) return "Netscape浏览器";
+    if (ua.includes("Konqueror")) return "Konqueror浏览器";
+    if (ua.includes("Lynx")) return "Lynx浏览器";
+
+    return "未知浏览器";
+}
         
         document.getElementById('browser-name').textContent = getBrowser();
         

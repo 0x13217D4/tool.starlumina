@@ -328,7 +328,14 @@
             
             // 显示错误
             function showError(message) {
-                errorMessage.textContent = message;
+                // 转义 HTML 特殊字符防止 XSS
+                const escapedMessage = message
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+                errorMessage.textContent = escapedMessage;
                 errorMessage.style.display = 'block';
             }
         });

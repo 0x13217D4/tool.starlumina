@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
@@ -232,32 +232,106 @@
                     }
                     hideError();
                     
-                    // 使用公共DNS查询API
-                    const apiUrl = `https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=${type}`;
+            // 首先尝试使用本地PHP代理进行DNS查询
+            tryLocalProxy();
+            
+            function tryLocalProxy() {
+                console.log('尝试本地PHP代理查询...');
+                
+                // 使用fetch调用本地PHP代理
+                fetch('./dns-proxy.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        domain: domain,
+                        type: type
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('本地代理DNS查询响应:', data);
+                    if (data.success) {
+                        // 在结果中保留原始输入信息
+                        if (input !== domain) {
+                            data.originalInput = input;
+                            data.actualDomain = domain;
+                        }
+                        displayResults(data);
+                    } else {
+                        throw new Error(data.error || '代理查询失败');
+                    }
+                })
+                .catch(error => {
+                    console.error('本地代理查询错误:', error);
+                    console.log('本地代理失败，尝试直接调用公共API...');
+                    tryPublicAPIs();
+                });
+            }
+            
+            function tryPublicAPIs() {
+                // 使用多个DNS查询API作为备选方案
+                const apis = [
+                    // Cloudflare DNS API
+                    `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(domain)}&type=${type}`,
+                    // Google DNS API (作为备选)
+                    `https://8.8.8.8/resolve?name=${encodeURIComponent(domain)}&type=${type}`,
+                    // 备选方案1
+                    `https://1.1.1.1/dns-query?name=${encodeURIComponent(domain)}&type=${type}`
+                ];
+                
+                let currentApiIndex = 0;
+                
+                function tryNextAPI() {
+                    if (currentApiIndex >= apis.length) {
+                        showError('所有DNS查询方法都无法访问，可能是网络限制或CORS策略阻止了跨域请求');
+                        resultArea.innerHTML = '<p>查询结果将显示在这里...</p>';
+                        return;
+                    }
                     
-                    axios.get(apiUrl)
-                        .then(response => {
-                            console.log('DNS查询响应:', response.data); // 调试信息
-                            // 在结果中保留原始输入信息
-                            if (input !== domain) {
-                                response.data.originalInput = input;
-                                response.data.actualDomain = domain;
-                            }
-                            displayResults(response.data);
-                        })
-                        .catch(error => {
-                            console.error('DNS查询错误:', error); // 调试信息
-                            let errorMsg = '查询失败: ';
-                            if (error.response) {
-                                errorMsg += `HTTP ${error.response.status}: ${error.response.data?.error || error.response.statusText}`;
-                            } else if (error.request) {
-                                errorMsg += '网络请求失败，请检查网络连接';
-                            } else {
-                                errorMsg += error.message;
-                            }
-                            showError(errorMsg);
-                            resultArea.innerHTML = '<p>查询结果将显示在这里...</p>';
-                        });
+                    const apiUrl = apis[currentApiIndex];
+                    console.log(`尝试API ${currentApiIndex + 1}: ${apiUrl}`);
+                    
+                    // 使用fetch API并设置适当的请求头
+                    fetch(apiUrl, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/dns-json',
+                            'Content-Type': 'application/json'
+                        },
+                        mode: 'cors',
+                        cache: 'no-cache'
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('公共API DNS查询响应:', data); // 调试信息
+                        // 在结果中保留原始输入信息
+                        if (input !== domain) {
+                            data.originalInput = input;
+                            data.actualDomain = domain;
+                        }
+                        displayResults(data);
+                    })
+                    .catch(error => {
+                        console.error(`API ${currentApiIndex + 1} 查询错误:`, error);
+                        currentApiIndex++;
+                        tryNextAPI();
+                    });
+                }
+                
+                tryNextAPI();
+            }
                 } catch (error) {
                     showError('查询过程中发生错误: ' + error.message);
                 }
